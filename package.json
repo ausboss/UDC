@@ -7,8 +7,8 @@
   "contributors": [
     "Jason Smith"
   ],
-  "homepage": "https://github.com/jasondsmith72/ClaudeComputerCommander",
-  "bugs": "https://github.com/jasondsmith72/ClaudeComputerCommander/issues",
+  "homepage": "https://github.com/jasondsmith72/UDC",
+  "bugs": "https://github.com/jasondsmith72/UDC/issues",
   "type": "module",
   "bin": {
     "desktop-commander": "dist/index.js",
