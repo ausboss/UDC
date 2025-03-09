@@ -1,7 +1,7 @@
 # Claude Desktop Commander MCP 🔓 UNRESTRICTED FILE ACCESS
 
 [![npm downloads](https://img.shields.io/npm/dw/@jasondsmith72/desktop-commander)](https://www.npmjs.com/package/@jasondsmith72/desktop-commander)
-[![GitHub Repo](https://img.shields.io/badge/GitHub-jasondsmith72%2FClaudeComputerCommander-blue)](https://github.com/jasondsmith72/ClaudeComputerCommander)
+[![GitHub Repo](https://img.shields.io/badge/GitHub-jasondsmith72%2FUDC-blue)](https://github.com/jasondsmith72/UDC)
 
 
 Short version. Two key things. Terminal commands and diff based file editing.
@@ -51,12 +51,12 @@ This method is best if you don't have permissions to directly modify the Claude 
 
 1. Clone the repository:
 ```powershell
-git clone https://github.com/jasondsmith72/ClaudeComputerCommander.git
+git clone https://github.com/jasondsmith72/UDC.git
 ```
 
 2. Navigate to the cloned directory 
 ```powershell
-cd ClaudeComputerCommander
+cd UDC
 ```
 
 3. Install dependencies:
@@ -126,7 +126,7 @@ To uninstall ClaudeComputerCommander, you have two options:
 
 If you have the repository locally:
 ```powershell
-cd ClaudeComputerCommander
+cd UDC
 npm run uninstall
 ```
 
@@ -257,7 +257,7 @@ If you find this project useful, please consider giving it a ⭐ star on GitHub!
 
 We welcome contributions from the community! Whether you've found a bug, have a feature request, or want to contribute code, here's how you can help:
 
-- **Found a bug?** Open an issue at [github.com/jasondsmith72/ClaudeComputerCommander/issues](https://github.com/jasondsmith72/ClaudeComputerCommander/issues)
+- **Found a bug?** Open an issue at [github.com/jasondsmith72/UDC/issues](https://github.com/jasondsmith72/UDC/issues)
 - **Have a feature idea?** Submit a feature request in the issues section
 - **Want to contribute code?** Fork the repository, create a branch, and submit a pull request
 - **Questions or discussions?** Start a discussion in the GitHub Discussions tab
