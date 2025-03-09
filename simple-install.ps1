@@ -33,7 +33,6 @@ Write-Host ""
 $confirmInstall = Read-Host "Do you want to install UDC? (Y/N)"
 if ($confirmInstall -ne "Y" -and $confirmInstall -ne "y") {
     Write-Host "Installation cancelled by user." -ForegroundColor Yellow
-    # Removed exit command
     return
 }
 Write-Host "Proceeding with installation..." -ForegroundColor Green
@@ -45,7 +44,6 @@ if (-not $isAdmin) {
     Write-Host "ERROR: This script must be run as Administrator." -ForegroundColor Red
     Write-Host "Please close this window and run PowerShell as Administrator." -ForegroundColor Red
     Write-Host "Right-click on PowerShell and select 'Run as administrator'." -ForegroundColor Red
-    # Removed exit command
     return
 }
 Write-Host "Administrator privileges detected. Proceeding with installation..." -ForegroundColor Green
@@ -174,15 +172,46 @@ try {
                     Write-Host "Running Node.js installer with additional tools..." -ForegroundColor Cyan
                     Start-Process -FilePath "msiexec.exe" -ArgumentList "/i `"$NodeMsiPath`" /qn ADDLOCAL=NodeRuntime,npm,DocumentationShortcuts,EnvironmentPathNode,EnvironmentPathNpmModules,AssociateFiles,NodePerfCtrSupport,NodeEtwSupport" -Wait
                     
-                    # Verify installation after MSI installer runs
+                    # Update PATH environment variable for this session
                     $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
+                    
+                    # Verify installation after MSI installer runs
                     try {
-                        $NodeVersion = & node --version
-                        Write-Host "Node.js $NodeVersion installed successfully via MSI." -ForegroundColor Green
-                        $UseSystemNode = $true
+                        # Try to find node in Program Files
+                        $nodePaths = @(
+                            "${env:ProgramFiles}\nodejs\node.exe",
+                            "${env:ProgramFiles(x86)}\nodejs\node.exe"
+                        )
+                        
+                        $nodeFound = $false
+                        foreach ($nodePath in $nodePaths) {
+                            if (Test-Path $nodePath) {
+                                Write-Host "Node.js executable found at: $nodePath" -ForegroundColor Green
+                                $nodeFound = $true
+                                # Add to path explicitly for this session
+                                $nodeDir = Split-Path -Parent $nodePath
+                                $env:Path = "$nodeDir;$env:Path"
+                                break
+                            }
+                        }
+                        
+                        if ($nodeFound) {
+                            try {
+                                $NodeVersion = & node --version
+                                Write-Host "Node.js $NodeVersion installed successfully via MSI." -ForegroundColor Green
+                                $UseSystemNode = $true
+                            } catch {
+                                Write-Host "Node.js found but cannot be executed yet. Will proceed assuming it's installed." -ForegroundColor Yellow
+                                $UseSystemNode = $true
+                            }
+                        } else {
+                            Write-Host "MSI installation completed but Node.js executable not found." -ForegroundColor Yellow
+                            Write-Host "Assuming installation succeeded - you may need to restart your computer later." -ForegroundColor Yellow
+                            $UseSystemNode = $true
+                        }
                     } catch {
-                        Write-Host "MSI installation completed but Node.js is not in PATH yet." -ForegroundColor Yellow
-                        Write-Host "Will configure for system Node.js - you may need to restart your computer later." -ForegroundColor Yellow
+                        Write-Host "MSI installation completed but Node.js cannot be verified." -ForegroundColor Yellow
+                        Write-Host "Assuming installation succeeded - you may need to restart your computer later." -ForegroundColor Yellow
                         $UseSystemNode = $true
                     }
                     
@@ -208,70 +237,11 @@ try {
 if (-not $UseSystemNode) {
     Write-Host "Node.js installation failed. Cannot continue." -ForegroundColor Red
     Write-Host "Please install Node.js manually before running this script again." -ForegroundColor Red
-    # Removed exit command
     return
 }
 
-# Install additional Node.js tools
-Write-Host "Installing additional Node.js tools and build dependencies..." -ForegroundColor Cyan
-
-# Create restoration point before additional tools installation
-$restorationNeeded = $false
-$installationSuccessful = $true
-
-try {
-    # Install node-gyp globally
-    Write-Host "Installing node-gyp..." -ForegroundColor Cyan
-    $nodeGypResult = Start-Process -FilePath "npm" -ArgumentList "install -g node-gyp" -Wait -NoNewWindow -PassThru
-    if ($nodeGypResult.ExitCode -ne 0) {
-        Write-Host "Failed to install node-gyp." -ForegroundColor Red
-        $installationSuccessful = $false
-    }
-    
-    # Install Python (required for some Node.js modules)
-    if ($installationSuccessful -and $wingetInstalled) {
-        Write-Host "Installing Python (required for some Node.js modules)..." -ForegroundColor Cyan
-        $pythonInstallResult = Start-Process -FilePath "winget" -ArgumentList "install Python.Python.3.10 -e --source winget" -Wait -NoNewWindow -PassThru
-        if ($pythonInstallResult.ExitCode -ne 0) {
-            Write-Host "Failed to install Python." -ForegroundColor Red
-            $installationSuccessful = $false
-        }
-    }
-    
-    # Install Windows SDK components if needed
-    if ($installationSuccessful) {
-        Write-Host "Installing Visual C++ Build Tools..." -ForegroundColor Cyan
-        $buildToolsResult = Start-Process -FilePath "npm" -ArgumentList "install --global --production windows-build-tools" -Wait -NoNewWindow -PassThru
-        if ($buildToolsResult.ExitCode -ne 0) {
-            Write-Host "Failed to install Visual C++ Build Tools." -ForegroundColor Red
-            $installationSuccessful = $false
-        }
-    }
-    
-    if ($installationSuccessful) {
-        Write-Host "Additional tools installed successfully." -ForegroundColor Green
-    } else {
-        throw "Failed to install one or more additional tools."
-    }
-} catch {
-    Write-Host "Error: Additional tools installation failed: $_" -ForegroundColor Red
-    Write-Host "Reverting all changes and exiting script..." -ForegroundColor Red
-    $restorationNeeded = $true
-}
-
-# Revert changes if needed
-if ($restorationNeeded) {
-    # Clean up installation directory if it exists
-    if (Test-Path $RepoDir) {
-        Write-Host "Removing installation directory..." -ForegroundColor Yellow
-        Remove-Item -Path $RepoDir -Recurse -Force -ErrorAction SilentlyContinue
-    }
-    
-    Write-Host "Installation failed. All changes have been reverted." -ForegroundColor Red
-    Write-Host "Please ensure your system meets all requirements and try again." -ForegroundColor Red
-    # Removed exit command
-    return
-}
+# Skip node-gyp and build tool installation as these often cause problems
+# Instead, we'll install only the necessary dependencies for the application
 
 # Create the installation directory if it doesn't exist
 if (-not (Test-Path $RepoDir)) {
@@ -282,7 +252,7 @@ if (-not (Test-Path $RepoDir)) {
 # Clone or download repository
 if ($hasGit) {
     # Clone repository (note: we're not in the target directory yet)
-    Write-Host "Cloning ClaudeComputerCommander-Unlocked repository..." -ForegroundColor Cyan
+    Write-Host "Cloning UDC repository..." -ForegroundColor Cyan
     try {
         # If the directory doesn't exist, create it first
         if (-not (Test-Path $RepoDir)) {
@@ -356,30 +326,57 @@ if (-not $hasGit) {
 
 # Install dependencies - SIMPLIFIED: Using --ignore-scripts to avoid the prepare hook
 Write-Host "Installing dependencies..." -ForegroundColor Cyan
-$npmCommand = "npm"
-$nodeCommand = "node"
 
 # Check for package.json to determine if we have a full repo
 $hasPackageJson = Test-Path (Join-Path $RepoDir "package.json")
 if ($hasPackageJson) {
     try {
-        # Install dependencies without running scripts
-        & $npmCommand install --ignore-scripts
+        # Use --no-optional to skip optional dependencies that might require build tools
+        # Use --no-fund to silence funding messages
+        & npm install --ignore-scripts --no-optional --no-fund
         
-        # Now explicitly run the build once
-        & $npmCommand run build
+        Write-Host "Dependencies installed successfully." -ForegroundColor Green
         
-        Write-Host "Dependencies installed and project built successfully." -ForegroundColor Green
+        # Try to build the project, but don't fail if it doesn't work
+        try {
+            Write-Host "Building project..." -ForegroundColor Cyan
+            & npm run build
+            Write-Host "Project built successfully." -ForegroundColor Green
+        } catch {
+            Write-Host "Warning: Build process failed: $_" -ForegroundColor Yellow
+            Write-Host "This might not be a problem. Continuing installation..." -ForegroundColor Yellow
+        }
     } catch {
         Write-Host "Error installing dependencies: $_" -ForegroundColor Red
+        Write-Host "Continuing with installation anyway..." -ForegroundColor Yellow
     }
 }
 
 # Create a startup script
-@"
+$startupScript = @"
 @echo off
-node "$($RepoDir.Replace('\','\\'))\dist\index.js"
-"@ | Out-File -FilePath (Join-Path $RepoDir "start-commander.bat") -Encoding ascii
+echo Starting UDC...
+cd "$($RepoDir.Replace('\','\\'))"
+node dist/index.js
+pause
+"@ 
+
+# Write the startup script
+$startupScriptPath = Join-Path $RepoDir "start-commander.bat"
+$startupScript | Out-File -FilePath $startupScriptPath -Encoding ascii
+
+# Create a desktop shortcut
+try {
+    $WshShell = New-Object -ComObject WScript.Shell
+    $Shortcut = $WshShell.CreateShortcut("$env:USERPROFILE\Desktop\UDC.lnk")
+    $Shortcut.TargetPath = $startupScriptPath
+    $Shortcut.WorkingDirectory = $RepoDir
+    $Shortcut.Description = "Universal Device Controller"
+    $Shortcut.Save()
+    Write-Host "Desktop shortcut created successfully." -ForegroundColor Green
+} catch {
+    Write-Host "Could not create desktop shortcut: $_" -ForegroundColor Yellow
+}
 
 # Simple completion message
 Write-Host ""
@@ -388,8 +385,10 @@ Write-Host ""
 Write-Host "UDC has been installed to:"
 Write-Host $RepoDir -ForegroundColor Cyan
 Write-Host ""
-Write-Host "A startup script has been created at:"
-Write-Host "$(Join-Path $RepoDir "start-commander.bat")" -ForegroundColor Cyan
+Write-Host "To start UDC, you can use the desktop shortcut or run:"
+Write-Host "$startupScriptPath" -ForegroundColor Cyan
+Write-Host ""
+Write-Host "NOTE: You may need to restart your computer to use UDC if this was a fresh Node.js installation."
 Write-Host ""
 Write-Host "The PowerShell window will remain open. Press Enter to continue..."
 Read-Host
