@@ -33,7 +33,8 @@ Write-Host ""
 $confirmInstall = Read-Host "Do you want to install UDC? (Y/N)"
 if ($confirmInstall -ne "Y" -and $confirmInstall -ne "y") {
     Write-Host "Installation cancelled by user." -ForegroundColor Yellow
-    exit
+    # Removed exit command
+    return
 }
 Write-Host "Proceeding with installation..." -ForegroundColor Green
 Write-Host ""
@@ -44,7 +45,8 @@ if (-not $isAdmin) {
     Write-Host "ERROR: This script must be run as Administrator." -ForegroundColor Red
     Write-Host "Please close this window and run PowerShell as Administrator." -ForegroundColor Red
     Write-Host "Right-click on PowerShell and select 'Run as administrator'." -ForegroundColor Red
-    exit
+    # Removed exit command
+    return
 }
 Write-Host "Administrator privileges detected. Proceeding with installation..." -ForegroundColor Green
 Write-Host ""
@@ -206,7 +208,8 @@ try {
 if (-not $UseSystemNode) {
     Write-Host "Node.js installation failed. Cannot continue." -ForegroundColor Red
     Write-Host "Please install Node.js manually before running this script again." -ForegroundColor Red
-    exit
+    # Removed exit command
+    return
 }
 
 # Install additional Node.js tools
@@ -266,7 +269,8 @@ if ($restorationNeeded) {
     
     Write-Host "Installation failed. All changes have been reverted." -ForegroundColor Red
     Write-Host "Please ensure your system meets all requirements and try again." -ForegroundColor Red
-    exit
+    # Removed exit command
+    return
 }
 
 # Create the installation directory if it doesn't exist
@@ -387,4 +391,5 @@ Write-Host ""
 Write-Host "A startup script has been created at:"
 Write-Host "$(Join-Path $RepoDir "start-commander.bat")" -ForegroundColor Cyan
 Write-Host ""
-# This allows the PowerShell window to remain open after script completion
+Write-Host "The PowerShell window will remain open. Press Enter to continue..."
+Read-Host
