@@ -44,9 +44,7 @@ if (-not $isAdmin) {
     Write-Host "ERROR: This script must be run as Administrator." -ForegroundColor Red
     Write-Host "Please close this window and run PowerShell as Administrator." -ForegroundColor Red
     Write-Host "Right-click on PowerShell and select 'Run as administrator'." -ForegroundColor Red
-    Write-Host ""
-    Write-Host "Press any key to exit..."
-    $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
+    # Removed "Press any key to exit" to prevent window from closing
     exit
 }
 Write-Host "Administrator privileges detected. Proceeding with installation..." -ForegroundColor Green
@@ -269,8 +267,7 @@ try {
 if (-not $UseSystemNode) {
     Write-Host "Node.js installation failed. Cannot continue." -ForegroundColor Red
     Write-Host "Please install Node.js manually before running this script again." -ForegroundColor Red
-    Write-Host "Press any key to exit..."
-    $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
+    # Removed "Press any key to exit" to prevent window from closing
     exit
 }
 
@@ -331,8 +328,7 @@ if ($restorationNeeded) {
     
     Write-Host "Installation failed. All changes have been reverted." -ForegroundColor Red
     Write-Host "Please ensure your system meets all requirements and try again." -ForegroundColor Red
-    Write-Host "Press any key to exit..."
-    $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
+    # Removed "Press any key to exit" to prevent window from closing
     exit
 }
 
@@ -454,5 +450,5 @@ Write-Host ""
 Write-Host "A startup script has been created at:"
 Write-Host "$(Join-Path $RepoDir "start-commander.bat")" -ForegroundColor Cyan
 Write-Host ""
-Write-Host "Press any key to exit..."
-$null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
+# Modified to remove the "Press any key to exit" prompt
+# This allows the PowerShell window to remain open after script completion
