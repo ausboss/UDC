@@ -44,80 +44,19 @@ if (-not $isAdmin) {
     Write-Host "ERROR: This script must be run as Administrator." -ForegroundColor Red
     Write-Host "Please close this window and run PowerShell as Administrator." -ForegroundColor Red
     Write-Host "Right-click on PowerShell and select 'Run as administrator'." -ForegroundColor Red
-    # Removed "Press any key to exit" to prevent window from closing
     exit
 }
 Write-Host "Administrator privileges detected. Proceeding with installation..." -ForegroundColor Green
 Write-Host ""
 
-# Check if winget is installed and install it if not
+# Check if winget is installed but don't attempt to install it
 $wingetInstalled = $false
 try {
     $wingetVersion = & winget --version
     Write-Host "Winget is already installed ($wingetVersion)." -ForegroundColor Green
     $wingetInstalled = $true
 } catch {
-    Write-Host "Winget not found. Attempting to install Winget..." -ForegroundColor Yellow
-    
-    if ($isAdmin) {
-        # Check Windows version to determine the installation method
-        $osVersionInfo = [System.Environment]::OSVersion.Version
-        $isWindows10OrLater = ($osVersionInfo.Major -ge 10)
-        
-        if ($isWindows10OrLater) {
-            try {
-                # For Windows 10 1809 or later, try to install via Microsoft Store
-                Write-Host "Attempting to install Winget via Microsoft Store..." -ForegroundColor Cyan
-                
-                # Create temp directory for installer
-                $tempDir = Join-Path $env:TEMP "winget_install"
-                if (-not (Test-Path $tempDir)) {
-                    New-Item -ItemType Directory -Path $tempDir -Force | Out-Null
-                }
-                
-                # Download the latest Microsoft.DesktopAppInstaller package
-                $apiUrl = "https://api.github.com/repos/microsoft/winget-cli/releases/latest"
-                $latestRelease = Invoke-RestMethod -Uri $apiUrl -Method Get
-                
-                # Find the .msixbundle URL
-                $msixBundleUrl = $latestRelease.assets | 
-                    Where-Object { $_.name -like "*.msixbundle" } | 
-                    Select-Object -ExpandProperty browser_download_url -First 1
-                
-                if ($msixBundleUrl) {
-                    $msixBundlePath = Join-Path $tempDir "WinGet.msixbundle"
-                    Write-Host "Downloading WinGet from $msixBundleUrl..." -ForegroundColor Cyan
-                    Invoke-WebRequest -Uri $msixBundleUrl -OutFile $msixBundlePath
-                    
-                    # Install the app
-                    Write-Host "Installing WinGet..." -ForegroundColor Cyan
-                    Add-AppxPackage -Path $msixBundlePath
-                    
-                    # Verify installation
-                    try {
-                        $wingetVersion = & winget --version
-                        Write-Host "Winget installed successfully ($wingetVersion)." -ForegroundColor Green
-                        $wingetInstalled = $true
-                    } catch {
-                        Write-Host "Winget installation completed but may require restarting PowerShell." -ForegroundColor Yellow
-                        Write-Host "Please restart PowerShell after this script completes and run it again." -ForegroundColor Yellow
-                    }
-                    
-                    # Clean up
-                    Remove-Item -Path $tempDir -Recurse -Force -ErrorAction SilentlyContinue
-                } else {
-                    Write-Host "Could not find WinGet download URL. Continuing without WinGet." -ForegroundColor Red
-                }
-            } catch {
-                Write-Host "Error installing WinGet: $_" -ForegroundColor Red
-                Write-Host "Continuing without WinGet." -ForegroundColor Yellow
-            }
-        } else {
-            Write-Host "Windows version doesn't support WinGet. Continuing without it." -ForegroundColor Yellow
-        }
-    } else {
-        Write-Host "Administrator rights required to install WinGet. Continuing without it." -ForegroundColor Yellow
-    }
+    Write-Host "Winget not found. Continuing without Winget." -ForegroundColor Yellow
 }
 
 # Set installation directory
@@ -267,7 +206,6 @@ try {
 if (-not $UseSystemNode) {
     Write-Host "Node.js installation failed. Cannot continue." -ForegroundColor Red
     Write-Host "Please install Node.js manually before running this script again." -ForegroundColor Red
-    # Removed "Press any key to exit" to prevent window from closing
     exit
 }
 
@@ -328,7 +266,6 @@ if ($restorationNeeded) {
     
     Write-Host "Installation failed. All changes have been reverted." -ForegroundColor Red
     Write-Host "Please ensure your system meets all requirements and try again." -ForegroundColor Red
-    # Removed "Press any key to exit" to prevent window from closing
     exit
 }
 
@@ -450,5 +387,4 @@ Write-Host ""
 Write-Host "A startup script has been created at:"
 Write-Host "$(Join-Path $RepoDir "start-commander.bat")" -ForegroundColor Cyan
 Write-Host ""
-# Modified to remove the "Press any key to exit" prompt
 # This allows the PowerShell window to remain open after script completion
