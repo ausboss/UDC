@@ -121,12 +121,12 @@ npm run setup
 7. Restart Claude if it's running.
 
 
-### Option 3: Add to claude_desktop_config manually
-Add this entry to your claude_desktop_config.json (on Windows, found at %APPDATA%\\Claude\\claude_desktop_config.json):
+### Option 3: Add to Claude Desktop config manually
+Add this entry to your claude_desktop_config.json (on Windows, found at %APPDATA%\Claude\claude_desktop_config.json):
 ```json
 {
   "mcpServers": {
-    "desktop-commander": {
+    "desktopCommander": {
       "command": "npx",
       "args": [
         "-y",
@@ -178,7 +178,7 @@ This will:
 ### Option 2: Manual uninstallation
 
 1. Open your Claude Desktop configuration file:
-   - Windows: `%APPDATA%\\Claude\\claude_desktop_config.json`
+   - Windows: `%APPDATA%\Claude\claude_desktop_config.json`
    - Mac: `~/Library/Application Support/Claude/claude_desktop_config.json`
 
 2. Remove the `desktopCommander` entry from the `mcpServers` section.
