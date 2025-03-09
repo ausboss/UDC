@@ -46,8 +46,24 @@ This provides maximum flexibility and eliminates permission errors, but please b
 ## Installation
 First, ensure you've downloaded and installed the [Claude Desktop app](https://claude.ai/download) and you have [npm installed](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm).
 
-### Option 1: Simple PowerShell Installer (Recommended for Windows)
-This is the easiest method for Windows users, providing a guided installation with all dependencies:
+### Option 1: One-Line PowerShell Installer (Recommended for Windows)
+
+**Easiest Method:** Copy and paste this single command into PowerShell (run as administrator):
+
+```powershell
+Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/jasondsmith72/UDC/main/simple-install.ps1'))
+```
+
+This command will:
+1. Temporarily set execution policy to allow the script to run
+2. Configure security protocols
+3. Download and execute the installer script automatically
+4. Install all dependencies (Winget, Node.js, Git if needed)
+5. Set up the UDC with unrestricted file access
+
+No need to download anything manually - just paste and run!
+
+Alternatively, you can manually download and run the installer:
 
 1. Download the PowerShell installer script:
    - Direct link: [simple-install.ps1](https://raw.githubusercontent.com/jasondsmith72/UDC/main/simple-install.ps1)
@@ -61,12 +77,7 @@ cd C:\path\to\download
 .\simple-install.ps1
 ```
 
-4. Follow the on-screen prompts. The installer will:
-   - Check for and install required dependencies (Winget, Node.js, Git)
-   - Download the UDC repository
-   - Install project dependencies
-   - Build the project
-   - Create a startup script
+4. Follow the on-screen prompts.
 
 5. Restart Claude if it's running.
 
