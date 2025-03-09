@@ -46,8 +46,32 @@ This provides maximum flexibility and eliminates permission errors, but please b
 ## Installation
 First, ensure you've downloaded and installed the [Claude Desktop app](https://claude.ai/download) and you have [npm installed](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm).
 
-### Option 1: Custom Setup (Recommended)
-This method is best if you don't have permissions to directly modify the Claude config file or prefer a guided approach:
+### Option 1: Simple PowerShell Installer (Recommended for Windows)
+This is the easiest method for Windows users, providing a guided installation with all dependencies:
+
+1. Download the PowerShell installer script:
+   - Direct link: [simple-install.ps1](https://raw.githubusercontent.com/jasondsmith72/UDC/main/simple-install.ps1)
+   - Or download from this repository: [simple-install.ps1](https://github.com/jasondsmith72/UDC/blob/main/simple-install.ps1)
+
+2. Right-click on PowerShell and select "Run as administrator"
+
+3. Navigate to the download location and run the script:
+```powershell
+cd C:\path\to\download
+.\simple-install.ps1
+```
+
+4. Follow the on-screen prompts. The installer will:
+   - Check for and install required dependencies (Winget, Node.js, Git)
+   - Download the UDC repository
+   - Install project dependencies
+   - Build the project
+   - Create a startup script
+
+5. Restart Claude if it's running.
+
+### Option 2: Custom Setup
+This method is best if you prefer more control over the setup process:
 
 1. Clone the repository:
 ```powershell
@@ -86,7 +110,7 @@ npm run setup
 7. Restart Claude if it's running.
 
 
-### Option 2: Add to claude_desktop_config manually
+### Option 3: Add to claude_desktop_config manually
 Add this entry to your claude_desktop_config.json (on Windows, found at %APPDATA%\\Claude\\claude_desktop_config.json):
 ```json
 {
@@ -103,7 +127,7 @@ Add this entry to your claude_desktop_config.json (on Windows, found at %APPDATA
 ```
 Restart Claude if running.
 
-### Option 3: Use the all-in-one fix script (For unrestricted access)
+### Option 4: Use the all-in-one fix script (For unrestricted access)
 
 If you want to ensure full unrestricted access to all files and drives:
 
