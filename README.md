@@ -303,20 +303,16 @@ If you encounter issues setting up or using the MCP server:
 2. Verify that the claude_desktop_config.json file exists and is properly formatted
 3. Make sure you have the required permissions to modify the config file
 4. Restart Claude Desktop after making changes to the config
-5. If you're having file access issues, try using the `fix-all.js` script to enable unrestricted access
-6. Check the log files for detailed error messages:
+5. Check the log files for detailed error messages:
    - `server.log`: General operation logs
    - `file-operations.log`: Detailed file operation logs
-   - `test-unrestricted.log`: Results from access testing
 
 ### Access Troubleshooting
 
 If you're experiencing permission issues:
 
-1. Run the `fix-all.js` script to apply all unrestricted access fixes
-2. Use the `test-unrestricted.js` script to verify access works correctly
-3. Check if `execute_command` can access files even when direct file operations fail
-4. Try running the application with administrator privileges
+1. Check if `execute_command` can access files even when direct file operations fail
+2. Try running the application with administrator privileges
 
 
 ## Contributing
