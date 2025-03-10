@@ -46,7 +46,9 @@ This provides maximum flexibility and eliminates permission errors, but please b
 ## Installation
 First, ensure you've downloaded and installed the [Claude Desktop app](https://claude.ai/download) and you have [npm installed](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm).
 
-### Option 1: One-Line PowerShell Installer (Recommended for Windows)
+### Windows Installation
+
+#### Option 1: One-Line PowerShell Installer (Windows Only)
 
 **Easiest Method:** Copy and paste this single command into PowerShell (run as administrator):
 
@@ -81,31 +83,68 @@ cd C:\path\to\download
 
 5. Restart Claude if it's running.
 
-### Option 2: Custom Setup
-This method is best if you prefer more control over the setup process:
+### macOS and Linux Installation
+
+For macOS and Linux users, there is no automatic installation script available. Please follow these manual steps instead:
 
 1. Clone the repository:
-```powershell
+```bash
 git clone https://github.com/jasondsmith72/UDC.git
 ```
 
-2. Navigate to the cloned directory 
-```powershell
+2. Navigate to the cloned directory:
+```bash
 cd UDC
 ```
 
 3. Install dependencies:
-```powershell
+```bash
 npm install
 ```
 
 4. Build the project:
-```powershell
+```bash
+npm run build
+```
+
+5. Run the setup script:
+```bash
+npm run setup:custom
+```
+
+6. Follow the on-screen instructions to configure Claude Desktop.
+
+7. Restart Claude if it's running.
+
+8. For macOS users, the Claude Desktop config file is located at: `~/Library/Application Support/Claude/claude_desktop_config.json`
+
+9. For Linux users, check for the Claude config file in a similar application data location.
+
+### Option 2: Custom Setup (All Platforms)
+This method is best if you prefer more control over the setup process:
+
+1. Clone the repository:
+```bash
+git clone https://github.com/jasondsmith72/UDC.git
+```
+
+2. Navigate to the cloned directory 
+```bash
+cd UDC
+```
+
+3. Install dependencies:
+```bash
+npm install
+```
+
+4. Build the project:
+```bash
 npm run build
 ```
 
 5. Run the appropriate setup script based on your needs:
-```powershell
+```bash
 # For Windows with automatic configuration:
 npm run setup:windows
 
@@ -121,8 +160,13 @@ npm run setup
 7. Restart Claude if it's running.
 
 
-### Option 3: Add to Claude Desktop config manually
-Add this entry to your claude_desktop_config.json (on Windows, found at %APPDATA%\Claude\claude_desktop_config.json):
+### Option 3: Add to Claude Desktop config manually (All Platforms)
+Add this entry to your claude_desktop_config.json:
+
+- Windows: `%APPDATA%\Claude\claude_desktop_config.json`
+- macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`
+- Linux: Check your application data folder
+
 ```json
 {
   "mcpServers": {
@@ -143,7 +187,7 @@ Restart Claude if running.
 If you want to ensure full unrestricted access to all files and drives:
 
 1. After cloning the repository and navigating to the directory:
-```powershell
+```bash
 node fix-all.js
 ```
 
@@ -160,13 +204,13 @@ To uninstall ClaudeComputerCommander, you have two options:
 ### Option 1: Using the uninstall script (Recommended)
 
 If you have the repository locally:
-```powershell
+```bash
 cd UDC
 npm run uninstall
 ```
 
 If you've installed it globally:
-```powershell
+```bash
 npx @jasondsmith72/desktop-commander uninstall
 ```
 
@@ -180,13 +224,14 @@ This will:
 1. Open your Claude Desktop configuration file:
    - Windows: `%APPDATA%\Claude\claude_desktop_config.json`
    - Mac: `~/Library/Application Support/Claude/claude_desktop_config.json`
+   - Linux: Check your application data folder
 
 2. Remove the `desktopCommander` entry from the `mcpServers` section.
 
 3. Restart Claude Desktop.
 
 4. If you installed the package globally, uninstall it:
-   ```powershell
+   ```bash
    npm uninstall -g @jasondsmith72/desktop-commander
    ```
 
