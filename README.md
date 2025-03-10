@@ -66,15 +66,15 @@ No need to download anything manually - just paste and run!
 Alternatively, you can manually download and run the installer:
 
 1. Download the PowerShell installer script:
-   - Direct link: [simple-install.ps1](https://raw.githubusercontent.com/jasondsmith72/UDC/main/simple-install.ps1)
-   - Or download from this repository: [simple-install.ps1](https://github.com/jasondsmith72/UDC/blob/main/simple-install.ps1)
+   - Direct link: [install.ps1](https://raw.githubusercontent.com/jasondsmith72/UDC/main/install.ps1)
+   - Or download from this repository: [install.ps1](https://github.com/jasondsmith72/UDC/blob/main/install.ps1)
 
 2. Right-click on PowerShell and select "Run as administrator"
 
 3. Navigate to the download location and run the script:
 ```powershell
 cd C:\path\to\download
-.\simple-install.ps1
+.\install.ps1
 ```
 
 4. Follow the on-screen prompts.
