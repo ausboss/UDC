@@ -1,5 +1,23 @@
 # UDC PowerShell Installer
 # This script properly fetches the complete repository, installs dependencies, and configures Claude Desktop
+Write-Host @"
+                                                                              
+  __ ___      _____  ___  ___  _ __ ___   ___                                 
+ / _` \ \ /\ / / _ \/ __|/ _ \| '_ ` _ \ / _ \                                
+| (_| |\ V  V /  __/\__ \ (_) | | | | | |  __/                                
+ \__,_| \_/\_/ \___||___/\___/|_| |_| |_|\___|                                
+                                                                              
+  __ _| | |      (_)_ __     ___  _ __   ___                                 
+ / _` | | |      | | '_ \   / _ \| '_ \ / _ \                                
+| (_| | | |      | | | | | | (_) | | | |  __/                                
+ \__,_|_|_|      |_|_| |_|  \___/|_| |_|\___|                                
+                                                                              
+ (_)_ __  ___| |_ __ _ | | | ___ _ __                                         
+ | | '_ \/ __| __/ _` | | |/ _ \ '__|                                        
+ | | | | \__ \ || (_| | | |  __/ |                                           
+ |_|_| |_|___/\__\__,_|_|_|\___|_|                                           
+
+"@ -ForegroundColor Cyan
 
 Write-Host "UDC PowerShell Installer"
 Write-Host "================================================"
