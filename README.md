@@ -44,7 +44,7 @@ This provides maximum flexibility and eliminates permission errors, but please b
 - **NEW: Cross-platform support** - Works on Windows, macOS, and Linux
 
 ## Installation
-First, ensure you've downloaded and installed the [Claude Desktop app](https://claude.ai/download) and you have [npm installed](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm).
+First, ensure you've downloaded and installed the [Claude Desktop app](https://claude.ai/download)
 
 ### Windows Installation
 
@@ -84,6 +84,8 @@ cd C:\path\to\download
 5. Restart Claude if it's running.
 
 ### macOS and Linux Installation
+
+First, ensure you've downloaded and installed the [Claude Desktop app](https://claude.ai/download) and you have [npm installed](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm).
 
 For macOS and Linux users, there is no automatic installation script available. Please follow these manual steps instead:
 
