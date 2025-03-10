@@ -5,16 +5,26 @@
 
 ## 🔓 UNRESTRICTED FILE ACCESS
 
-**IMPORTANT UPDATE**: This version of ClaudeComputerCommander has been modified to provide **unrestricted access to all files and drives** on your computer. Directory restrictions have been completely removed, allowing Claude to:
+This enhanced version of ClaudeComputerCommander has been modified to provide completely unrestricted access to your entire filesystem. All directory limitations have been removed, giving Claude comprehensive capabilities across your system.
 
-- Access any drive (C:, D:, etc.) and any folder on your system
-- Read and write files in any location 
-- Execute commands that interact with any part of the filesystem
-- Navigate and modify system files and folders
+Key Features:
 
-This provides maximum flexibility and eliminates permission errors, but please be aware that Claude will have access to all parts of your computer's filesystem. Use with appropriate caution.
+Universal Drive Access: Full access to all drives (C:, D:, etc.) on Windows and root directory (/) on Unix-like systems
+Boundary-Free Navigation: No restrictions on which directories or files Claude can interact with
+Comprehensive File Operations: Read, write, and modify files in any location, including system directories
+Intelligent Fallback Mechanisms: If direct file operations encounter issues, the system automatically uses command execution alternatives
+Command Execution: Terminal commands and diff-based file editing across the entire filesystem
 
-Short version. Two key things. Terminal commands and diff based file editing.
+Technical Implementation:
+
+Modified source code bypasses all directory validation
+Configuration settings allow access to all drives and paths
+Environmental variables signal unrestricted mode to the system
+Command-based fallbacks leverage PowerShell or shell commands when needed
+
+This provides maximum flexibility and eliminates permission errors while working with your filesystem. Please use with appropriate caution as Claude will have complete access to all parts of your computer's file system.
+
+**Origin of this modidfed MCP servers below. 
 
 This is a server that allows Claude desktop app to execute long-running terminal commands on your computer and manage processes through Model Context Protocol (MCP) + Built on top of [MCP Filesystem Server](https://github.com/modelcontextprotocol/servers/tree/main/src/filesystem) to provide additional search and replace file editing capabilities.
 
@@ -41,7 +51,6 @@ This is a fork of [wonderwhy-er/ClaudeComputerCommander](https://github.com/wond
 - **NEW: Full unrestricted filesystem access** - Access any file or folder on your computer
 - **NEW: Command-based fallbacks** - Even when direct file access fails, commands will be used as a fallback
 - **NEW: Improved path handling** - Better support for Windows paths and relative directories
-- **NEW: Cross-platform support** - Works on Windows, macOS, and Linux
 
 ## Installation
 First, ensure you've downloaded and installed the [Claude Desktop app](https://claude.ai/download)
@@ -208,23 +217,6 @@ This will:
    npm uninstall -g @jasondsmith72/desktop-commander
    ```
 
-## Unrestricted File Access
-
-This version of ClaudeComputerCommander has been modified to provide **completely unrestricted access to all files and drives**. 
-
-Key aspects of the unrestricted access:
-
-1. **No Directory Limitations**: There are no restrictions on which directories Claude can access
-2. **All Drives Accessible**: All drive letters (C:, D:, etc.) are accessible on Windows systems
-3. **Root Access**: The root directory (/) is accessible on Unix-like systems
-4. **Command Fallbacks**: If direct file operations fail, the system automatically falls back to using command execution
-
-The unrestricted access is provided through several mechanisms:
-
-1. Configuration that allows all drives and paths
-2. Modified source code that bypasses all directory validation
-3. Command-based fallbacks that use PowerShell or shell commands when direct file operations fail
-4. Environmental variables that signal unrestricted mode to the system
 
 ## Usage
 
@@ -279,6 +271,8 @@ For commands that may take a while:
 2. Command continues in background
 3. Use `read_output` with PID to get new output
 4. Use `force_terminate` to stop if needed
+
+
 
 ## Troubleshooting
 
