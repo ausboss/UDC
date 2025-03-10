@@ -46,6 +46,9 @@ This is a fork of [wonderwhy-er/ClaudeComputerCommander](https://github.com/wond
 ## Installation
 First, ensure you've downloaded and installed the [Claude Desktop app](https://claude.ai/download)
 
+For best results download and install [Node.js](https://nodejs.org/en/download) and make sure to install all tools. (this will install python and other tools that will be needed for other mcp servers)
+
+
 ### Windows Installation
 
 #### Option 1: One-Line PowerShell Installer (Windows Only)
@@ -60,30 +63,14 @@ This command will:
 1. Temporarily set execution policy to allow the script to run
 2. Configure security protocols
 3. Download and execute the installer script automatically
-4. Install all dependencies (Winget, Node.js, Git if needed)
+4. Install all dependencies (Node.js without tools and Git if needed)
 5. Set up the UDC with unrestricted file access
+6. Follow the on-screen prompts.
+7. the installer will show you the direct path for UTC and give you the code to put in the config file.
+8. Add the config to Claude desktop, click hamburger top left and click settings then go to developer and edit the config file.
+9. Restart Claude if it's running.
 
-No need to download anything manually - just paste and run!
-
-Alternatively, you can manually download and run the installer:
-
-1. Download the PowerShell installer script:
-   - Direct link: [install.ps1](https://raw.githubusercontent.com/jasondsmith72/UDC/main/install.ps1)
-   - Or download from this repository: [install.ps1](https://github.com/jasondsmith72/UDC/blob/main/install.ps1)
-
-2. Right-click on PowerShell and select "Run as administrator"
-
-3. Navigate to the download location and run the script:
-```powershell
-cd C:\path\to\download
-.\install.ps1
-```
-
-4. Follow the on-screen prompts.
-
-5. Restart Claude if it's running.
-
-### macOS and Linux Installation
+### macOS and Linux Installation (Untested) 
 
 First, ensure you've downloaded and installed the [Claude Desktop app](https://claude.ai/download) and you have [npm installed](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm).
 
@@ -158,8 +145,6 @@ npm run setup
 ```
 
 6. Follow any on-screen instructions provided by the setup script.
-
-7. Restart Claude if it's running.
 
 
 ###  Add to Claude Desktop config manually (All Platforms)
@@ -306,13 +291,6 @@ If you encounter issues setting up or using the MCP server:
 5. Check the log files for detailed error messages:
    - `server.log`: General operation logs
    - `file-operations.log`: Detailed file operation logs
-
-### Access Troubleshooting
-
-If you're experiencing permission issues:
-
-1. Check if `execute_command` can access files even when direct file operations fail
-2. Try running the application with administrator privileges
 
 
 ## Contributing
