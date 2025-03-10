@@ -5,9 +5,9 @@
 
 ## 🔓 UNRESTRICTED FILE ACCESS
 
-This enhanced version of ClaudeComputerCommander has been modified to provide completely unrestricted access to your entire filesystem. All directory limitations have been removed, giving Claude comprehensive capabilities across your system.
+This enhanced version of ClaudeComputerCommander has been modified to provide completely unrestricted access to your entire filesystem. All directory limitations have been removed, giving Claude comprehensive capabilities across your system. (**Must run Claude Desktop as Administrator to bypass windows secruity) 
 
-Key Features:
+**Key Features:
 
 Universal Drive Access: Full access to all drives (C:, D:, etc.) on Windows and root directory (/) on Unix-like systems
 Boundary-Free Navigation: No restrictions on which directories or files Claude can interact with
@@ -15,7 +15,7 @@ Comprehensive File Operations: Read, write, and modify files in any location, in
 Intelligent Fallback Mechanisms: If direct file operations encounter issues, the system automatically uses command execution alternatives
 Command Execution: Terminal commands and diff-based file editing across the entire filesystem
 
-Technical Implementation:
+**Technical Implementation:
 
 Modified source code bypasses all directory validation
 Configuration settings allow access to all drives and paths
