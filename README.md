@@ -162,7 +162,7 @@ npm run setup
 7. Restart Claude if it's running.
 
 
-### Option 3: Add to Claude Desktop config manually (All Platforms)
+###  Add to Claude Desktop config manually (All Platforms)
 Add this entry to your claude_desktop_config.json:
 
 - Windows: `%APPDATA%\Claude\claude_desktop_config.json`
