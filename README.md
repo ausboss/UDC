@@ -51,7 +51,7 @@ First, ensure you've downloaded and installed the [Claude Desktop app](https://c
 **Easiest Method:** Copy and paste this single command into PowerShell (run as administrator):
 
 ```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/jasondsmith72/UDC/main/simple-install.ps1'))
+Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/jasondsmith72/UDC/main/install.ps1'))
 ```
 
 This command will:
