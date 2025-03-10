@@ -184,20 +184,6 @@ Add this entry to your claude_desktop_config.json:
 ```
 Restart Claude if running.
 
-### Option 4: Use the all-in-one fix script (For unrestricted access)
-
-If you want to ensure full unrestricted access to all files and drives:
-
-1. After cloning the repository and navigating to the directory:
-```bash
-node fix-all.js
-```
-
-This script will:
-- Configure unrestricted file access
-- Install all dependencies and build the project
-- Update Claude Desktop's configuration
-- Run tests to verify access works correctly
 
 ## Uninstallation
 
