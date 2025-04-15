@@ -1,6 +1,6 @@
 import { terminalManager } from '../terminal-manager.js';
 import { commandManager } from '../command-manager.js';
-import { ExecuteCommandArgsSchema, ReadOutputArgsSchema, ForceTerminateArgsSchema, ListSessionsArgsSchema } from './schemas.js';
+import { ExecuteCommandArgsSchema, ReadOutputArgsSchema, SendInputArgsSchema, ForceTerminateArgsSchema, ListSessionsArgsSchema } from './schemas.js';
 
 export async function executeCommand(args: unknown) {
   const parsed = ExecuteCommandArgsSchema.safeParse(args);
@@ -14,15 +14,39 @@ export async function executeCommand(args: unknown) {
 
   const result = await terminalManager.executeCommand(
     parsed.data.command,
-    parsed.data.timeout_ms
+    parsed.data.timeout_ms,
+    parsed.data.interactive || false
   );
+
+  let responseText = `Command started with PID ${result.pid}\nInitial output:\n${result.output}`;
+  
+  if (result.interactive) {
+    responseText += '\nInteractive session started. Use send_input to send commands and read_output to get responses.';
+  } else if (result.isBlocked) {
+    responseText += '\nCommand is still running. Use read_output to get more output.';
+  }
 
   return {
     content: [{
       type: "text",
-      text: `Command started with PID ${result.pid}\nInitial output:\n${result.output}${
-        result.isBlocked ? '\nCommand is still running. Use read_output to get more output.' : ''
-      }`
+      text: responseText
+    }],
+  };
+}
+
+export async function sendInput(args: unknown) {
+  const parsed = SendInputArgsSchema.safeParse(args);
+  if (!parsed.success) {
+    throw new Error(`Invalid arguments for send_input: ${parsed.error}`);
+  }
+
+  const success = terminalManager.sendInput(parsed.data.pid, parsed.data.input);
+  return {
+    content: [{
+      type: "text",
+      text: success
+        ? `Input sent to process ${parsed.data.pid}. Use read_output to see the response.`
+        : `Failed to send input. Process ${parsed.data.pid} may not be an interactive session or no longer exists.`
     }],
   };
 }
@@ -69,7 +93,7 @@ export async function listSessions() {
       text: sessions.length === 0
         ? 'No active sessions'
         : sessions.map(s =>
-            `PID: ${s.pid}, Blocked: ${s.isBlocked}, Runtime: ${Math.round(s.runtime / 1000)}s`
+            `PID: ${s.pid}, ${s.interactive ? 'Interactive' : 'Standard'}, Blocked: ${s.isBlocked}, Runtime: ${Math.round(s.runtime / 1000)}s`
           ).join('\n')
     }],
   };

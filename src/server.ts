@@ -9,6 +9,7 @@ import { commandManager } from './command-manager.js';
 import {
   ExecuteCommandArgsSchema,
   ReadOutputArgsSchema,
+  SendInputArgsSchema,
   ForceTerminateArgsSchema,
   ListSessionsArgsSchema,
   KillProcessArgsSchema,
@@ -24,7 +25,7 @@ import {
   GetFileInfoArgsSchema,
   EditBlockArgsSchema,
 } from './tools/schemas.js';
-import { executeCommand, readOutput, forceTerminate, listSessions } from './tools/execute.js';
+import { executeCommand, sendInput, readOutput, forceTerminate, listSessions } from './tools/execute.js';
 import { listProcesses, killProcess } from './tools/process.js';
 import {
   readFile,
@@ -60,8 +61,14 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
       {
         name: "execute_command",
         description:
-          "Execute a terminal command with timeout. Command will continue running in background if it doesn't complete within timeout.",
+          "Execute a terminal command with timeout. Command will continue running in background if it doesn't complete within timeout. Set interactive=true for bidirectional communication like SSH.",
         inputSchema: zodToJsonSchema(ExecuteCommandArgsSchema),
+      },
+      {
+        name: "send_input",
+        description:
+          "Send input to an interactive terminal session. Only works with interactive sessions created with execute_command.",
+        inputSchema: zodToJsonSchema(SendInputArgsSchema),
       },
       {
         name: "read_output",
@@ -216,6 +223,10 @@ server.setRequestHandler(CallToolRequestSchema, async (request: CallToolRequest)
       case "execute_command": {
         const parsed = ExecuteCommandArgsSchema.parse(args);
         return executeCommand(parsed);
+      }
+      case "send_input": {
+        const parsed = SendInputArgsSchema.parse(args);
+        return sendInput(parsed);
       }
       case "read_output": {
         const parsed = ReadOutputArgsSchema.parse(args);

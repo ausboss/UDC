@@ -4,10 +4,16 @@ import { z } from "zod";
 export const ExecuteCommandArgsSchema = z.object({
   command: z.string(),
   timeout_ms: z.number().optional(),
+  interactive: z.boolean().optional(),
 });
 
 export const ReadOutputArgsSchema = z.object({
   pid: z.number(),
+});
+
+export const SendInputArgsSchema = z.object({
+  pid: z.number(),
+  input: z.string(),
 });
 
 export const ForceTerminateArgsSchema = z.object({
